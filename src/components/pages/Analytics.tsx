@@ -1,29 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, 
-  Calendar, 
   Clock, 
   CheckCircle, 
   AlertTriangle, 
   Target,
-  BarChart3,
-  PieChart,
-  Activity,
-  Users,
-  Zap,
-  Award
+  Award,
+  Loader2
 } from 'lucide-react';
 import { useTaskStore } from '../../stores/taskStore';
 import { useAuthStore } from '../../stores/authStore';
-import type { Task } from '../../stores/taskStore';
+import SimpleDropdown from '../ui/SimpleDropdown';
+
 
 const Analytics: React.FC = () => {
   const { getUserTasks } = useTaskStore();
   const { user } = useAuthStore();
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'quarter'>('month');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading time
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Get user-specific tasks
   const tasks = user?.email ? getUserTasks(user.email) : [];
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative">
+            <Loader2 className="w-12 h-12 text-red-400 animate-spin mx-auto mb-4" />
+            <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 to-red-600/20 rounded-full blur-xl"></div>
+          </div>
+          <h2 className="text-xl font-semibold text-white mb-2">Loading Analytics</h2>
+          <p className="text-gray-400">Please wait while we calculate your insights...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Calculate analytics
   const analytics = {
@@ -122,15 +143,16 @@ const Analytics: React.FC = () => {
               <p className="text-gray-300">Track your productivity and task performance</p>
             </div>
             <div className="flex gap-2 mt-4 sm:mt-0">
-              <select
+              <SimpleDropdown
                 value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value as any)}
-                className="px-4 py-2 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
-              >
-                <option value="week">This Week</option>
-                <option value="month">This Month</option>
-                <option value="quarter">This Quarter</option>
-              </select>
+                onChange={(value) => setTimeRange(value as 'week' | 'month' | 'quarter')}
+                options={[
+                  { value: 'week', label: 'This Week' },
+                  { value: 'month', label: 'This Month' },
+                  { value: 'quarter', label: 'This Quarter' }
+                ]}
+                placeholder="This Month"
+              />
             </div>
           </div>
 

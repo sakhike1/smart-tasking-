@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Plus, 
-  MoreVertical, 
   Clock, 
   CheckCircle, 
   AlertTriangle,
   Target,
-  Move,
-  Edit,
-  Trash2
+  Trash2,
+  Loader2
 } from 'lucide-react';
 import { useTaskStore } from '../stores/taskStore';
 import { useAuthStore } from '../stores/authStore';
@@ -27,10 +24,33 @@ const KanbanBoard: React.FC = () => {
   const { user } = useAuthStore();
   
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
-  const [showAddTask, setShowAddTask] = useState(false);
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading time
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const userTasks = user?.email ? getUserTasks(user.email) : [];
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative">
+            <Loader2 className="w-12 h-12 text-red-400 animate-spin mx-auto mb-4" />
+            <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 to-red-600/20 rounded-full blur-xl"></div>
+          </div>
+          <h2 className="text-xl font-semibold text-white mb-2">Loading Kanban Board</h2>
+          <p className="text-gray-400">Please wait while we organize your tasks...</p>
+        </div>
+      </div>
+    );
+  }
 
   const columns: KanbanColumn[] = [
     {
@@ -119,14 +139,7 @@ const KanbanBoard: React.FC = () => {
                     {userTasks.filter(task => task.status === column.status).length}
                   </span>
                 </div>
-                {column.status === 'pending' && (
-                  <button
-                    onClick={() => setShowAddTask(true)}
-                    className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
-                  >
-                    <Plus size={20} />
-                  </button>
-                )}
+
               </div>
 
               {/* Tasks */}
@@ -147,12 +160,7 @@ const KanbanBoard: React.FC = () => {
                       <div className="flex items-start justify-between mb-3">
                         <h3 className="text-white font-medium text-sm leading-tight">{task.title}</h3>
                         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <button
-                            onClick={() => setEditingTask(task)}
-                            className="p-1 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded transition-all duration-300"
-                          >
-                            <Edit size={14} />
-                          </button>
+
                           <button
                             onClick={() => deleteTask(task.id)}
                             className="p-1 text-gray-400 hover:text-red-400 hover:bg-red-500/20 rounded transition-all duration-300"
@@ -214,14 +222,7 @@ const KanbanBoard: React.FC = () => {
                       {column.icon}
                     </div>
                     <p className="text-sm">No tasks here</p>
-                    {column.status === 'pending' && (
-                      <button
-                        onClick={() => setShowAddTask(true)}
-                        className="mt-2 text-orange-400 hover:text-orange-300 text-sm"
-                      >
-                        Add your first task
-                      </button>
-                    )}
+
                   </div>
                 )}
               </div>
@@ -229,13 +230,7 @@ const KanbanBoard: React.FC = () => {
           ))}
         </div>
 
-        {/* Drag Instructions */}
-        <div className="mt-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800/50 rounded-xl text-gray-400 text-sm">
-            <Move size={16} />
-            Drag tasks between columns to update their status
-          </div>
-        </div>
+
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
 import LoginForm from '../auth/LoginForm';
 import RegisterForm from '../auth/RegisterForm';
-import { scrollToTop } from '../../utils/scrollUtils';
+import { scrollToTop, scrollToPage } from '../../utils/scrollUtils';
 import { 
   Home, 
   CheckSquare, 
@@ -33,11 +33,12 @@ interface MenuItem {
   href: string;
   icon: React.ReactNode;
   requiresAuth?: boolean;
+  sectionId?: string; // For home page sections
 }
 
 const Navigation: React.FC<NavigationProps> = ({ 
   className = '', 
-  variant = 'default' 
+ 
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [showLoginForm, setShowLoginForm] = useState<boolean>(false);
@@ -69,16 +70,6 @@ const Navigation: React.FC<NavigationProps> = ({
     }
   };
 
-  const handleLoginClick = (): void => {
-    setShowLoginForm(true);
-    setShowRegisterForm(false);
-  };
-
-  const handleRegisterClick = (): void => {
-    setShowRegisterForm(true);
-    setShowLoginForm(false);
-  };
-
   const handleCloseAuthForms = (): void => {
     setShowLoginForm(false);
     setShowRegisterForm(false);
@@ -92,6 +83,18 @@ const Navigation: React.FC<NavigationProps> = ({
   const handleSwitchToLogin = (): void => {
     setShowRegisterForm(false);
     setShowLoginForm(true);
+  };
+
+  const handleNavigation = (item: MenuItem) => {
+    setIsMobileMenuOpen(false);
+    
+    // If we're on the home page and clicking home, scroll to top
+    if (item.href === '/' && location.pathname === '/') {
+      scrollToTop();
+    } else {
+      // Navigate to the page
+      navigate(item.href);
+    }
   };
 
   const filteredMenuItems = menuItems.filter(item => 
@@ -181,9 +184,9 @@ const Navigation: React.FC<NavigationProps> = ({
             {/* Desktop Navigation */}
             <div className={`hidden md:flex ${isAuthenticated ? 'flex-1 justify-center' : ''} items-center space-x-8`}>
               {filteredMenuItems.map((item) => (
-                <Link
+                <button
                   key={item.id}
-                  to={item.href}
+                  onClick={() => handleNavigation(item)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center group relative ${
                       location.pathname === item.href 
                         ? 'text-white' 
@@ -195,7 +198,7 @@ const Navigation: React.FC<NavigationProps> = ({
                     <div className={`absolute bottom-0 left-0 h-0.5 bg-gray-400 transition-all duration-300 ${
                       location.pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}></div>
-                </Link>
+                </button>
               ))}
             </div>
 
@@ -229,20 +232,20 @@ const Navigation: React.FC<NavigationProps> = ({
                 </div>
               ) : (
                 <div className="flex items-center space-x-4">
-                  <Link 
-                    to="/login"
+                  <button 
+                    onClick={() => scrollToPage('/login')}
                       className="text-white/90 hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-white/10 backdrop-blur-sm flex items-center"
                   >
                       <LogIn size={16} className="mr-2" />
                     Login
-                  </Link>
-                  <Link 
-                    to="/signup"
+                  </button>
+                  <button 
+                    onClick={() => scrollToPage('/signup')}
                       className="bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-sm border border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl flex items-center"
                   >
                       <UserPlus size={16} className="mr-2" />
                     Sign Up
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>
@@ -273,19 +276,18 @@ const Navigation: React.FC<NavigationProps> = ({
           {/* Navigation Links */}
           <div className="px-4 py-4 space-y-2">
             {filteredMenuItems.map((item) => (
-              <Link
+              <button
                 key={item.id}
-                to={item.href}
-                className={`block px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 flex items-center ${
+                onClick={() => handleNavigation(item)}
+                className={`block w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 flex items-center ${
                   location.pathname === item.href 
                     ? 'text-white bg-gradient-to-r from-orange-400/20 to-red-500/20 border border-orange-400/30' 
                     : 'text-white/90 hover:text-white hover:bg-white/10'
                 }`}
-                onClick={() => setIsMobileMenuOpen(false)}
               >
                 <span className="mr-3">{item.icon}</span>
                 {item.label}
-              </Link>
+              </button>
             ))}
           </div>
 
@@ -319,22 +321,26 @@ const Navigation: React.FC<NavigationProps> = ({
               </div>
             ) : (
               <div className="space-y-3">
-                <Link 
-                  to="/login"
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    scrollToPage('/login');
+                  }}
                   className="w-full text-left text-white/90 hover:text-white px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 hover:bg-white/10 backdrop-blur-sm flex items-center"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <LogIn size={18} className="mr-3" />
                   Login
-                </Link>
-                <Link 
-                  to="/signup"
+                </button>
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    scrollToPage('/signup');
+                  }}
                   className="w-full bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 backdrop-blur-sm border border-orange-400/30 hover:border-orange-400/50 flex items-center shadow-lg hover:shadow-xl"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <UserPlus size={18} className="mr-3" />
                   Sign Up
-                </Link>
+                </button>
               </div>
             )}
           </div>

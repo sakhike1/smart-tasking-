@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Mail, 
   Phone, 
@@ -6,14 +6,13 @@ import {
   Clock, 
   Send, 
   MessageSquare, 
-  Users, 
   Globe,
   CheckCircle,
   ArrowRight,
   Building,
   Headphones,
-  Shield,
-  Zap
+  Zap,
+  Loader2
 } from 'lucide-react';
 
 const Contact: React.FC = () => {
@@ -26,6 +25,31 @@ const Contact: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading time
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative">
+            <Loader2 className="w-12 h-12 text-red-400 animate-spin mx-auto mb-4" />
+            <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 to-red-600/20 rounded-full blur-xl"></div>
+          </div>
+          <h2 className="text-xl font-semibold text-white mb-2">Loading Contact</h2>
+          <p className="text-gray-400">Preparing contact form...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

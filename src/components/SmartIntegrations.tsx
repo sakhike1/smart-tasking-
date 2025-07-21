@@ -7,17 +7,9 @@ import {
   Settings,
   CheckCircle,
   X,
-  Plus,
-  ExternalLink,
   RefreshCw,
-  Bell,
-  Clock,
-  FileText,
-  Users,
   Globe,
-  Smartphone,
   Database,
-  Shield,
   Activity
 } from 'lucide-react';
 

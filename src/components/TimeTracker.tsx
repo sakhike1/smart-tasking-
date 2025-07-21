@@ -11,7 +11,6 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useTaskStore } from '../stores/taskStore';
-import { useAuthStore } from '../stores/authStore';
 
 interface TimeTrackerProps {
   taskId?: string;
@@ -20,7 +19,7 @@ interface TimeTrackerProps {
 
 const TimeTracker: React.FC<TimeTrackerProps> = ({ taskId, onTimeUpdate }) => {
   const { getTaskById, updateTask } = useTaskStore();
-  const { user } = useAuthStore();
+
   
   const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(0); // in seconds

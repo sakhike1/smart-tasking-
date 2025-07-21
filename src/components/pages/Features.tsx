@@ -6,17 +6,12 @@ import {
   TrendingUp, 
   Calendar, 
   Users, 
-  Bell, 
-  BarChart3,
-  ArrowRight,
-  Clock,
-  Star,
   Shield,
   Brain,
-  Smartphone,
   Database,
   Lock,
-  Link
+  Link,
+  ArrowRight
 } from 'lucide-react';
 
 const FeaturesPage: React.FC = () => {
@@ -197,11 +192,17 @@ const FeaturesPage: React.FC = () => {
             Start your free trial today and see how TaskSmart can transform your productivity
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-orange-500 hover:to-red-600 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:scale-105">
+            <button 
+              onClick={() => window.location.href = '/signup'}
+              className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-orange-500 hover:to-red-600 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
               Start Free Trial
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={20} />
             </button>
-            <button className="bg-gradient-to-r from-white/20 to-white/10 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-white/30 hover:to-white/20 transition-all duration-300 flex items-center justify-center backdrop-blur-sm border border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl transform hover:scale-105">
+            <button 
+              onClick={() => window.location.href = '/contact'}
+              className="bg-gradient-to-r from-white/20 to-white/10 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-white/30 hover:to-white/20 transition-all duration-300 flex items-center justify-center backdrop-blur-sm border border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
               Schedule Demo
             </button>
           </div>

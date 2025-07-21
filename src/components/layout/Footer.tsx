@@ -1,11 +1,8 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useAuthStore } from '../../stores/authStore';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-  const location = useLocation();
-  const { isAuthenticated } = useAuthStore();
+
 
   return (
     <footer className="bg-gradient-to-r from-black via-gray-900 to-red-900 border-t border-gray-800 relative overflow-hidden">

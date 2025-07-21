@@ -1,20 +1,8 @@
 import React from 'react';
-import { 
-  CheckSquare, 
-  Zap, 
-  Target, 
-  TrendingUp, 
-  Calendar, 
-  Users, 
-  Bell, 
-  BarChart3,
-  ArrowRight,
-  Clock,
-  Star,
-  Shield
-} from 'lucide-react';
+import { CheckSquare, Zap, Target, TrendingUp, Calendar, Users, Star, Shield } from 'lucide-react';
 
 const Features: React.FC = () => {
+
   const features = [
     {
       icon: <CheckSquare className="text-orange-400" size={24} />,
@@ -62,7 +50,7 @@ const Features: React.FC = () => {
   ];
 
   return (
-    <section className="features-section py-20 pb-32 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden w-full">
+    <section id="features-section" className="features-section py-20 pb-32 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden w-full">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{

@@ -1,7 +1,9 @@
 import React from 'react';
 import { CheckSquare, Zap, Target, TrendingUp, ArrowRight, Play } from 'lucide-react';
+import { scrollToPage, scrollToSection } from '../../utils/scrollUtils';
 
 const Hero: React.FC = () => {
+
   return (
     <div className="hero-section relative min-h-screen bg-gradient-to-r from-black via-gray-900 to-orange-900 overflow-hidden w-full">
       {/* Dot Pattern Background */}
@@ -34,11 +36,17 @@ const Hero: React.FC = () => {
 
             {/* Call to Action */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:from-orange-500 hover:to-red-600 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:scale-105">
+              <button 
+                onClick={() => scrollToPage('/signup')}
+                className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:from-orange-500 hover:to-red-600 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
                 Get Started Free
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={20} />
               </button>
-              <button className="bg-gradient-to-r from-white/20 to-white/10 text-white px-8 py-3 rounded-full font-semibold text-lg hover:from-white/30 hover:to-white/20 transition-all duration-300 flex items-center justify-center backdrop-blur-sm border border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl transform hover:scale-105">
+              <button 
+                onClick={() => scrollToSection('features-section')}
+                className="bg-gradient-to-r from-white/20 to-white/10 text-white px-8 py-3 rounded-full font-semibold text-lg hover:from-white/30 hover:to-white/20 transition-all duration-300 flex items-center justify-center backdrop-blur-sm border border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
                 <Play className="mr-2" size={20} />
                 Watch Demo
               </button>

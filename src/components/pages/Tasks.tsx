@@ -1,40 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Plus, 
-  Edit, 
-  Trash2, 
   Calendar, 
-  Clock, 
   CheckCircle, 
   AlertTriangle, 
-  Bell,
-  Filter,
   Search,
-  MoreVertical,
+  Bell,
+  X,
+  Edit,
+  Trash2,
   Tag,
   User,
-  CalendarDays,
-  X,
-  Save
+  Save,
+  Loader2
 } from 'lucide-react';
 import { useTaskStore } from '../../stores/taskStore';
 import { useAuthStore } from '../../stores/authStore';
 import type { Task, NewTask } from '../../stores/taskStore';
+import SimpleDropdown from '../ui/SimpleDropdown';
 import KanbanBoard from '../KanbanBoard';
 
 const Tasks: React.FC = () => {
-  const { tasks, addTask, updateTask, deleteTask, updateTaskStatus, getUserTasks } = useTaskStore();
+  const { addTask, updateTask, deleteTask, updateTaskStatus, getUserTasks } = useTaskStore();
   const { user } = useAuthStore();
   
   // Get user-specific tasks
   const userTasks = user?.email ? getUserTasks(user.email) : [];
   const [filter, setFilter] = useState<'all' | 'pending' | 'in-progress' | 'completed'>('all');
   const [priorityFilter, setPriorityFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all');
+  const [sortBy, setSortBy] = useState<'dueDate' | 'priority' | 'created'>('dueDate');
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddTask, setShowAddTask] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading time
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [newTask, setNewTask] = useState<NewTask>({
     title: '',
@@ -160,9 +168,23 @@ const Tasks: React.FC = () => {
     return dueDate < new Date();
   };
 
-  const isReminderDue = (reminder: Date) => {
-    return reminder <= new Date();
-  };
+
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative">
+            <Loader2 className="w-12 h-12 text-red-400 animate-spin mx-auto mb-4" />
+            <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 to-red-600/20 rounded-full blur-xl"></div>
+          </div>
+          <h2 className="text-xl font-semibold text-white mb-2">Loading Tasks</h2>
+          <p className="text-gray-400">Please wait while we fetch your tasks...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
@@ -199,7 +221,7 @@ const Tasks: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowAddTask(true)}
-                className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-orange-500 hover:to-red-600 transition-all duration-300 flex items-center shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="bg-gradient-to-r from-red-400 to-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-red-500 hover:to-red-700 transition-all duration-300 flex items-center shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 <Plus className="mr-2" size={20} />
                 Add New Task
@@ -227,35 +249,42 @@ const Tasks: React.FC = () => {
                 </div>
 
                 {/* Status Filter */}
-                <select
+                <SimpleDropdown
                   value={filter}
-                  onChange={(e) => setFilter(e.target.value as any)}
-                  className="px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
-                >
-                  <option value="all">All Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="completed">Completed</option>
-                </select>
+                  onChange={(value) => setFilter(value as any)}
+                  options={[
+                    { value: 'all', label: 'All Status' },
+                    { value: 'pending', label: 'Pending' },
+                    { value: 'in-progress', label: 'In Progress' },
+                    { value: 'completed', label: 'Completed' }
+                  ]}
+                  placeholder="All Status"
+                />
 
                 {/* Priority Filter */}
-                <select
+                <SimpleDropdown
                   value={priorityFilter}
-                  onChange={(e) => setPriorityFilter(e.target.value as any)}
-                  className="px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
-                >
-                  <option value="all">All Priorities</option>
-                  <option value="high">High Priority</option>
-                  <option value="medium">Medium Priority</option>
-                  <option value="low">Low Priority</option>
-                </select>
+                  onChange={(value) => setPriorityFilter(value as any)}
+                  options={[
+                    { value: 'all', label: 'All Priorities' },
+                    { value: 'high', label: 'High Priority' },
+                    { value: 'medium', label: 'Medium Priority' },
+                    { value: 'low', label: 'Low Priority' }
+                  ]}
+                  placeholder="All Priorities"
+                />
 
                 {/* Sort */}
-                <select className="px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300">
-                  <option value="dueDate">Sort by Due Date</option>
-                  <option value="priority">Sort by Priority</option>
-                  <option value="created">Sort by Created</option>
-                </select>
+                <SimpleDropdown
+                  value={sortBy}
+                  onChange={(value) => setSortBy(value as 'dueDate' | 'priority' | 'created')}
+                  options={[
+                    { value: 'dueDate', label: 'Sort by Due Date' },
+                    { value: 'priority', label: 'Sort by Priority' },
+                    { value: 'created', label: 'Sort by Created' }
+                  ]}
+                  placeholder="Sort by Due Date"
+                />
               </div>
 
               {/* Tasks Grid */}
@@ -387,93 +416,108 @@ const Tasks: React.FC = () => {
 
       {/* Add Task Modal */}
       {showAddTask && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-8 max-w-md w-full border border-gray-700/50 shadow-2xl">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">Add New Task</h2>
-              <button
-                onClick={() => setShowAddTask(false)}
-                className="p-2 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-all duration-300"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Task Title</label>
-                <input
-                  type="text"
-                  value={newTask.title}
-                  onChange={(e) => handleInputChange('title', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
-                  placeholder="Enter task title"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Description</label>
-                <textarea
-                  value={newTask.description}
-                  onChange={(e) => handleInputChange('description', e.target.value)}
-                  rows={3}
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300 resize-none"
-                  placeholder="Enter task description"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Due Date</label>
-                <input
-                  type="datetime-local"
-                  value={newTask.dueDate}
-                  onChange={(e) => handleInputChange('dueDate', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Priority</label>
-                <select
-                  value={newTask.priority}
-                  onChange={(e) => handleInputChange('priority', e.target.value as 'low' | 'medium' | 'high')}
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
-                >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
-                <select
-                  value={newTask.category}
-                  onChange={(e) => handleInputChange('category', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
-                >
-                  <option value="Work">Work</option>
-                  <option value="Personal">Personal</option>
-                  <option value="Health">Health</option>
-                  <option value="Finance">Finance</option>
-                  <option value="Learning">Learning</option>
-                </select>
-              </div>
-
-              <div className="flex gap-4 pt-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="bg-black/80 backdrop-blur-xl rounded-3xl p-8 max-w-lg w-full border border-gray-700/50 shadow-2xl relative overflow-hidden">
+            {/* Subtle Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-900/20 via-transparent to-black/20 rounded-3xl"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-white">Add New Task</h2>
+                  <p className="text-gray-400 text-sm mt-1">Create a new task to boost your productivity</p>
+                </div>
                 <button
                   onClick={() => setShowAddTask(false)}
-                  className="flex-1 px-6 py-3 bg-gray-700/50 text-gray-300 rounded-xl font-medium hover:bg-gray-600/50 transition-all duration-300"
+                  className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300"
                 >
-                  Cancel
+                  <X size={20} />
                 </button>
-                <button
-                  onClick={handleAddTask}
-                  disabled={!newTask.title.trim() || !newTask.description.trim() || !newTask.dueDate}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-xl font-medium hover:from-orange-500 hover:to-red-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Add Task
-                </button>
+              </div>
+
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Task Title</label>
+                  <input
+                    type="text"
+                    value={newTask.title}
+                    onChange={(e) => handleInputChange('title', e.target.value)}
+                    className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all duration-300 hover:bg-white/15"
+                    placeholder="Enter task title"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Description</label>
+                  <textarea
+                    value={newTask.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    rows={2}
+                    className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all duration-300 resize-none hover:bg-white/15"
+                    placeholder="Brief description of the task"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-300 mb-2">Due Date</label>
+                    <div className="relative">
+                      <input
+                        type="datetime-local"
+                        value={newTask.dueDate}
+                        onChange={(e) => handleInputChange('dueDate', e.target.value)}
+                        className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-gray-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all duration-300 hover:bg-white/15"
+                      />
+                      <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-300 mb-2">Priority</label>
+                    <SimpleDropdown
+                      value={newTask.priority}
+                      onChange={(value) => handleInputChange('priority', value as 'low' | 'medium' | 'high')}
+                      options={[
+                        { value: 'low', label: 'Low' },
+                        { value: 'medium', label: 'Medium' },
+                        { value: 'high', label: 'High' }
+                      ]}
+                      placeholder="Select Priority"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Category</label>
+                  <SimpleDropdown
+                    value={newTask.category}
+                    onChange={(value) => handleInputChange('category', value)}
+                    options={[
+                      { value: 'Work', label: 'Work' },
+                      { value: 'Personal', label: 'Personal' },
+                      { value: 'Health', label: 'Health' },
+                      { value: 'Finance', label: 'Finance' },
+                      { value: 'Learning', label: 'Learning' }
+                    ]}
+                    placeholder="Select Category"
+                  />
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <button
+                    onClick={() => setShowAddTask(false)}
+                    className="flex-1 px-6 py-3 bg-white/10 backdrop-blur-sm text-gray-300 rounded-xl font-medium hover:bg-white/20 transition-all duration-300 border border-gray-600/50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleAddTask}
+                    disabled={!newTask.title.trim() || !newTask.description.trim() || !newTask.dueDate}
+                    className="flex-1 px-6 py-3 bg-white text-black rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-105"
+                  >
+                    Create Task
+                  </button>
+                </div>
               </div>
             </div>
           </div>

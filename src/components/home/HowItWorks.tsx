@@ -1,6 +1,5 @@
 import React from 'react';
 import { 
-  Play, 
   CheckCircle, 
   ArrowRight, 
   Sparkles,
@@ -9,8 +8,10 @@ import {
   Target,
   TrendingUp
 } from 'lucide-react';
+import { scrollToPage } from '../../utils/scrollUtils';
 
 const HowItWorks: React.FC = () => {
+
   const steps = [
     {
       number: "01",
@@ -47,7 +48,7 @@ const HowItWorks: React.FC = () => {
   ];
 
   return (
-    <section className="how-it-works-section py-20 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden w-full">
+    <section id="how-it-works-section" className="how-it-works-section py-20 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden w-full">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -155,7 +156,10 @@ const HowItWorks: React.FC = () => {
 
         {/* CTA Section */}
         <div className="text-center mt-16 mb-32">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-red-500 px-8 py-4 rounded-full text-white font-semibold text-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
+          <div 
+            onClick={() => scrollToPage('/signup')}
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-red-500 px-8 py-4 rounded-full text-white font-semibold text-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
+          >
             <span>Get Started Free</span>
             <ArrowRight size={20} />
           </div>

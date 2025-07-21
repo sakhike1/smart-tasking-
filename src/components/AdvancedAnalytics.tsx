@@ -52,7 +52,7 @@ const AdvancedAnalytics: React.FC = () => {
   const { getUserTasks } = useTaskStore();
   const { user } = useAuthStore();
   
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData>({
+  const [analyticsData] = useState<AnalyticsData>({
     productivityScore: 78,
     tasksCompleted: 45,
     averageCompletionTime: 2.3,

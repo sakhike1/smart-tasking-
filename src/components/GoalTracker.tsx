@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Target, 
   Trophy, 
-  Award, 
   Star, 
   Zap, 
   TrendingUp,
@@ -11,20 +10,12 @@ import {
   Clock,
   Gift,
   Crown,
-  Medal,
   Badge,
-  Sparkles,
-  ArrowRight,
-  Plus,
-  Settings,
-  BarChart3,
-  Activity,
   Flame,
   Sun,
   Moon
 } from 'lucide-react';
-import { useTaskStore } from '../stores/taskStore';
-import { useAuthStore } from '../stores/authStore';
+
 
 interface Goal {
   id: string;
@@ -60,10 +51,10 @@ interface Streak {
 }
 
 const GoalTracker: React.FC = () => {
-  const { getUserTasks } = useTaskStore();
-  const { user } = useAuthStore();
+
+
   
-  const [goals, setGoals] = useState<Goal[]>([
+  const [goals] = useState<Goal[]>([
     {
       id: '1',
       title: 'Complete 10 Tasks This Week',
@@ -104,7 +95,7 @@ const GoalTracker: React.FC = () => {
     }
   ]);
 
-  const [achievements, setAchievements] = useState<Achievement[]>([
+  const [achievements] = useState<Achievement[]>([
     {
       id: '1',
       title: 'First Steps',
@@ -176,7 +167,7 @@ const GoalTracker: React.FC = () => {
     }
   ]);
 
-  const [streaks, setStreaks] = useState<Streak[]>([
+  const [streaks] = useState<Streak[]>([
     {
       type: 'Daily Tasks',
       current: 5,
@@ -197,10 +188,10 @@ const GoalTracker: React.FC = () => {
     }
   ]);
 
-  const [showAddGoal, setShowAddGoal] = useState(false);
+
   const [currentView, setCurrentView] = useState<'goals' | 'achievements' | 'streaks'>('goals');
 
-  const userTasks = user?.email ? getUserTasks(user.email) : [];
+
 
   const getProgressPercentage = (current: number, target: number) => {
     return Math.min((current / target) * 100, 100);
@@ -260,13 +251,7 @@ const GoalTracker: React.FC = () => {
             <p className="text-gray-400 text-sm">Track your progress and unlock achievements</p>
           </div>
         </div>
-        <button
-          onClick={() => setShowAddGoal(true)}
-          className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-xl font-medium hover:from-yellow-500 hover:to-orange-600 transition-all duration-300 flex items-center gap-2"
-        >
-          <Plus size={16} />
-          Add Goal
-        </button>
+
       </div>
 
       {/* Navigation Tabs */}

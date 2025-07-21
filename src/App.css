@@ -41,3 +41,399 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Voice Assistant Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
+  }
+}
+
+@keyframes voice-wave {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.5);
+  }
+}
+
+@keyframes achievement-unlock {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8));
+  }
+}
+
+/* Voice Assistant Styles */
+.voice-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.voice-wave {
+  animation: voice-wave 0.6s ease-in-out infinite;
+}
+
+.voice-wave:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.voice-wave:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.voice-wave:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.voice-wave:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+/* Achievement Unlock Animation */
+.achievement-unlock {
+  animation: achievement-unlock 0.8s ease-out;
+}
+
+/* Sparkle Effect */
+.sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+/* Gradient Animation */
+.gradient-animate {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Floating Animation */
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Glow Effect */
+.glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Mind-blowing Feature Animations */
+@keyframes mind-blowing-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes mind-blowing-hover {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.mind-blowing-enter {
+  animation: mind-blowing-enter 0.6s ease-out;
+}
+
+.mind-blowing-hover:hover {
+  animation: mind-blowing-hover 0.3s ease-in-out;
+}
+
+/* AI Prediction Glow */
+.ai-prediction-glow {
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 2s ease infinite;
+}
+
+/* Smart Notification Pulse */
+.notification-pulse {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* Gamification Level Up */
+@keyframes level-up {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.level-up {
+  animation: level-up 0.5s ease-in-out;
+}
+
+/* Futuristic Loading */
+@keyframes futuristic-loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.futuristic-loading {
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
+  background-size: 200px 100%;
+  animation: futuristic-loading 1.5s infinite;
+}
+
+/* Holographic Effect */
+@keyframes holographic {
+  0%, 100% {
+    background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+  }
+  25% {
+    background: linear-gradient(45deg, #764ba2, #f093fb, #f5576c, #667eea);
+  }
+  50% {
+    background: linear-gradient(45deg, #f093fb, #f5576c, #667eea, #764ba2);
+  }
+  75% {
+    background: linear-gradient(45deg, #f5576c, #667eea, #764ba2, #f093fb);
+  }
+}
+
+.holographic {
+  animation: holographic 3s ease infinite;
+  background-size: 400% 400%;
+}
+
+/* Neural Network Effect */
+@keyframes neural-network {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.neural-network {
+  background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #667eea);
+  background-size: 400% 400%;
+  animation: neural-network 4s ease infinite;
+}
+
+/* Quantum Computing Effect */
+@keyframes quantum {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.quantum {
+  animation: quantum 2s ease-in-out infinite;
+}
+
+/* Time Travel Effect */
+@keyframes time-travel {
+  0% {
+    transform: translateX(-100%) rotateY(0deg);
+  }
+  50% {
+    transform: translateX(0%) rotateY(180deg);
+  }
+  100% {
+    transform: translateX(100%) rotateY(360deg);
+  }
+}
+
+.time-travel {
+  animation: time-travel 3s ease-in-out infinite;
+}
+
+/* Mind Control Effect */
+@keyframes mind-control {
+  0%, 100% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  50% {
+    filter: hue-rotate(180deg) brightness(1.2);
+  }
+}
+
+.mind-control {
+  animation: mind-control 4s ease-in-out infinite;
+}
+
+/* Teleportation Effect */
+@keyframes teleport {
+  0% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    opacity: 0.5;
+    transform: scale(0.8) rotate(90deg);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(0.5) rotate(180deg);
+  }
+  75% {
+    opacity: 0.5;
+    transform: scale(0.8) rotate(270deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.teleport {
+  animation: teleport 2s ease-in-out infinite;
+}
+
+/* Reality Warp Effect */
+@keyframes reality-warp {
+  0%, 100% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: perspective(1000px) rotateX(10deg) rotateY(10deg);
+  }
+  50% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(20deg);
+  }
+  75% {
+    transform: perspective(1000px) rotateX(-10deg) rotateY(10deg);
+  }
+}
+
+.reality-warp {
+  animation: reality-warp 3s ease-in-out infinite;
+}
+
+/* Dimensional Shift */
+@keyframes dimensional-shift {
+  0%, 100% {
+    transform: translateZ(0px) scale(1);
+  }
+  50% {
+    transform: translateZ(50px) scale(1.1);
+  }
+}
+
+.dimensional-shift {
+  animation: dimensional-shift 2s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+/* Cosmic Energy */
+@keyframes cosmic-energy {
+  0% {
+    background: radial-gradient(circle, #667eea 0%, #764ba2 50%, transparent 100%);
+  }
+  50% {
+    background: radial-gradient(circle, #f093fb 0%, #f5576c 50%, transparent 100%);
+  }
+  100% {
+    background: radial-gradient(circle, #667eea 0%, #764ba2 50%, transparent 100%);
+  }
+}
+
+.cosmic-energy {
+  animation: cosmic-energy 3s ease infinite;
+}
+
+/* Mind Blowing Final Effect */
+@keyframes mind-blowing-final {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(90deg);
+    filter: hue-rotate(90deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(270deg);
+    filter: hue-rotate(270deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    filter: hue-rotate(360deg);
+  }
+}
+
+.mind-blowing-final {
+  animation: mind-blowing-final 4s ease-in-out infinite;
+}

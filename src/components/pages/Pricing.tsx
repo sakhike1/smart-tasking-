@@ -1,19 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Check, 
   X, 
-  Star, 
-  Zap, 
-  Users, 
-  Shield, 
   ArrowRight,
   Crown,
-  Sparkles,
-  TrendingUp
+  Loader2
 } from 'lucide-react';
+import { scrollToPage } from '../../utils/scrollUtils';
 
 const Pricing: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isAnnual, setIsAnnual] = useState<boolean>(true);
+
+  // Simulate loading time
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 700);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative">
+            <Loader2 className="w-12 h-12 text-red-400 animate-spin mx-auto mb-4" />
+            <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 to-red-600/20 rounded-full blur-xl"></div>
+          </div>
+          <h2 className="text-xl font-semibold text-white mb-2">Loading Pricing</h2>
+          <p className="text-gray-400">Preparing our plans...</p>
+        </div>
+      </div>
+    );
+  }
 
   const plans = [
     {
@@ -178,11 +199,14 @@ const Pricing: React.FC = () => {
                   </div>
 
                   {/* CTA Button */}
-                  <button className={`w-full py-3 px-6 rounded-full font-semibold text-white transition-all duration-300 flex items-center justify-center group ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 shadow-lg hover:shadow-xl'
-                      : 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600'
-                  }`}>
+                  <button 
+                    onClick={() => scrollToPage('/signup')}
+                    className={`w-full py-3 px-6 rounded-full font-semibold text-white transition-all duration-300 flex items-center justify-center group ${
+                      plan.popular
+                        ? 'bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 shadow-lg hover:shadow-xl'
+                        : 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600'
+                    }`}
+                  >
                     {plan.popular ? 'Start Free Trial' : 'Get Started'}
                     <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={16} />
                   </button>
@@ -267,12 +291,18 @@ const Pricing: React.FC = () => {
               Join thousands of users who have transformed their productivity with TaskSmart
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-orange-500 hover:to-red-600 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:scale-105">
+              <button 
+                onClick={() => scrollToPage('/signup')}
+                className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-orange-500 hover:to-red-600 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
                 Get Started Free
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={20} />
               </button>
-              <button className="bg-gradient-to-r from-white/20 to-white/10 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-white/30 hover:to-white/20 transition-all duration-300 flex items-center justify-center backdrop-blur-sm border border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl transform hover:scale-105">
-                Get Started Free
+              <button 
+                onClick={() => scrollToPage('/contact')}
+                className="bg-gradient-to-r from-white/20 to-white/10 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-white/30 hover:to-white/20 transition-all duration-300 flex items-center justify-center backdrop-blur-sm border border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Contact Sales
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={20} />
               </button>
             </div>

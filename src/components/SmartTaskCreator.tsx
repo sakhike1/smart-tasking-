@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Plus, 
-  Calendar, 
-  Clock, 
   Target, 
   Zap, 
   Lightbulb,
   Sparkles,
   X,
-  CheckCircle,
-  AlertCircle
+  CheckCircle
 } from 'lucide-react';
 import { useTaskStore } from '../stores/taskStore';
 import { useAuthStore } from '../stores/authStore';
@@ -29,7 +26,7 @@ const SmartTaskCreator: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { addTask, getUserTasks } = useTaskStore();
   const { user } = useAuthStore();
   
-  const [isOpen, setIsOpen] = useState(false);
+
   const [naturalLanguage, setNaturalLanguage] = useState('');
   const [parsedTask, setParsedTask] = useState<NewTask>({
     title: '',
@@ -97,13 +94,13 @@ const SmartTaskCreator: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     });
 
     // Generate smart suggestions
-    generateSuggestions(input);
+    generateSuggestions();
     
     setIsProcessing(false);
   };
 
   // Generate smart suggestions based on user patterns
-  const generateSuggestions = (input: string) => {
+  const generateSuggestions = () => {
     const userCategories = userTasks.reduce((acc, task) => {
       acc[task.category] = (acc[task.category] || 0) + 1;
       return acc;

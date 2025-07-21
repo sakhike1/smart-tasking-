@@ -1,23 +1,13 @@
 import React, { useState } from 'react';
 import { 
   BarChart3, 
-  TrendingUp, 
-  Target, 
-  CheckCircle, 
-  Clock, 
-  AlertTriangle,
   Calendar,
   Zap,
   Award,
-  Users,
   Activity,
   Settings,
-  Move,
-  X,
   Plus
 } from 'lucide-react';
-import { useTaskStore } from '../stores/taskStore';
-import { useAuthStore } from '../stores/authStore';
 
 interface Widget {
   id: string;
@@ -120,7 +110,7 @@ const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({ userStats, userTask
                 .filter(task => task.status !== 'completed' && new Date(task.dueDate) > new Date())
                 .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())
                 .slice(0, 3)
-                .map((task, index) => (
+                .map((task) => (
                   <div key={task.id} className="flex items-center justify-between p-3 bg-white/10 rounded-xl">
                     <div>
                       <div className="text-white font-medium text-sm">{task.title}</div>
